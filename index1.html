@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Breathe Easy - Air Quality Index Monitor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <!-- Header with Hero Section -->
+    <header class="hero-section">
+        <div class="dark-overlay">
+            <nav class="navbar navbar-expand-lg navbar-dark">
+                <div class="container">
+                    <div class="logo">BREATHE<span>EASY</span></div>
+                    <button class="navbar-toggler" type="button" onclick="toggleSidebar()">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#"><i class="bi bi-house-door"></i> Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="bi bi-cloud-sun"></i> Live AQI</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#"><i class="bi bi-info-circle"></i> About</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="container hero-content text-center">
+                <h1 class="display-4 fw-bold text-white">Breathe Better, Live Better</h1>
+                <p class="lead text-white">Monitor real-time air quality in your city and take control of your health</p>
+                
+                <div class="search-container">
+                    <form class="d-flex" onsubmit="searchCity(event)">
+                        <input id="searchInput" class="form-control me-2" type="search" placeholder="Enter City Name">
+                        <button class="btn btn-primary search-btn" type="submit"><i class="bi bi-search"></i> Search AQI</button>
+                    </form>
+                </div>
+                
+                <div class="city-select-container mt-3">
+                    <select id="citySelect" class="form-select" onchange="getAQI(this.value)">
+                        <option value="">Select a city</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Panchkula">Panchkula</option>
+                        <option value="Shimla">Shimla</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Chennai">Chennai</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Jaipur">Jaipur</option>
+                        <option value="Surat">Surat</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="mySidebar">
+        <span class="close-btn" onclick="toggleSidebar()">×</span>
+        <div class="sidebar-header">
+            <img src="/api/placeholder/60/60" alt="logo" class="sidebar-logo">
+            <span>BreatheEasy</span>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#"><i class="bi bi-house-door"></i> Home</a>
+            <a href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="#"><i class="bi bi-cloud-sun"></i> Live AQI</a>
+            <a href="#"><i class="bi bi-geo-alt"></i> City Comparisons</a>
+            <a href="#"><i class="bi bi-graph-up"></i> Historical Data</a>
+            <a href="#"><i class="bi bi-info-circle"></i> About AQI</a>
+            <a href="#"><i class="bi bi-gear"></i> Settings</a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="content p-4">
+        <div class="container">
+            <!-- Notification area -->
+            <div id="notification" class="notification alert alert-info" style="display: none;"></div>
+            
+            <!-- Current AQI Section -->
+            <section class="current-aqi mb-5">
+                <div class="section-header">
+                    <h2><i class="bi bi-wind"></i> Current Air Quality</h2>
+                    <p class="text-muted">Real-time air quality data for your selected location</p>
+                </div>
+                
+                <div class="row aqi-cards">
+                    <div class="col-md-4 mb-4">
+                        <div class="card aqi-card">
+                            <div class="card-body text-center">
+                                <h3 class="card-title">Air Quality Index</h3>
+                                <div id="aqiBox" class="aqi-display">Fetching AQI...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card temp-card">
+                            <div class="card-body text-center">
+                                <h3 class="card-title">Temperature</h3>
+                                <div id="tempBox" class="temp-display">Fetching Temperature...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card precaution-card">
+                            <div class="card-body text-center">
+                                <h3 class="card-title">Health Advisory</h3>
+                                <div id="precautionBox" class="precaution-display">Fetching Precautions...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- AQI Scale Information -->
+            <section class="aqi-scale mb-5">
+                <div class="section-header">
+                    <h2><i class="bi bi-info-circle"></i> Understanding AQI Scale</h2>
+                    <p class="text-muted">What different AQI levels mean for your health</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div class="aqi-scale-container">
+                            <div class="aqi-level good">
+                                <span class="level-name">Good</span>
+                                <span class="level-range">0-50</span>
+                            </div>
+                            <div class="aqi-level moderate">
+                                <span class="level-name">Moderate</span>
+                                <span class="level-range">51-100</span>
+                            </div>
+                            <div class="aqi-level unhealthy-sensitive">
+                                <span class="level-name">Unhealthy for Sensitive Groups</span>
+                                <span class="level-range">101-150</span>
+                            </div>
+                            <div class="aqi-level unhealthy">
+                                <span class="level-name">Unhealthy</span>
+                                <span class="level-range">151-200</span>
+                            </div>
+                            <div class="aqi-level very-unhealthy">
+                                <span class="level-name">Very Unhealthy</span>
+                                <span class="level-range">201-300</span>
+                            </div>
+                            <div class="aqi-level hazardous">
+                                <span class="level-name">Hazardous</span>
+                                <span class="level-range">301+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- City Comparison Table -->
+            <section class="city-comparison mb-5">
+                <div class="section-header">
+                    <h2><i class="bi bi-bar-chart"></i> Major Cities Comparison</h2>
+                    <p class="text-muted">Compare air quality across major cities</p>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover city-table">
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>AQI</th>
+                                <th>Temperature (°C)</th>
+                                <th>Wind Speed (m/s)</th>
+                                <th>Humidity (%)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="citiesTable"></tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Tips Section -->
+            <section class="tips-section mb-5">
+                <div class="section-header">
+                    <h2><i class="bi bi-lightbulb"></i> Air Quality Tips</h2>
+                    <p class="text-muted">How to protect yourself on days with poor air quality</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="tip-card">
+                            <h4>Wear Proper Masks</h4>
+                            <p>Use N95 or PM2.5 masks when AQI exceeds 150 to filter harmful particles.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="tip-card">
+                            <h4>Use Air Purifiers</h4>
+                            <p>HEPA air purifiers can remove up to 99% of airborne pollutants indoors.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="tip-card">
+                            <h4>Exercise Indoors</h4>
+                            <p>Avoid outdoor exercise when AQI is high to protect your respiratory system.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>BreatheEasy</h5>
+                    <p>Helping you monitor and understand air quality for better health decisions.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Live AQI</a></li>
+                        <!-- <li><a href="#">About Us</a></li> -->
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="social-icons">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 BreatheEasy. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Button and Chatbox -->
+    <button id="chatbot-toggle" onclick="toggleChatbot()" class="btn chatbot-btn">
+        <i class="bi bi-chat-dots-fill"></i>
+    </button>
+
+    <div id="chatbox">
+        <div id="chatbox-header">
+            <span>BreatheEasy Assistant</span>
+            <button class="close-chat" onclick="toggleChatbot()"><i class="bi bi-x"></i></button>
+        </div>
+        <div id="chat-messages"></div>
+        <div id="chatbox-body">
+            <div class="chat-suggestions">
+                <button onclick="sendMessage('What are the precautions?')" class="suggestion-btn">Precautions</button>
+                <button onclick="sendMessage('What is the AQI?')" class="suggestion-btn">AQI</button>
+                <button onclick="sendMessage('Health effects')" class="suggestion-btn">Health Effects</button>
+                <button onclick="sendMessage('Carbon footprint')" class="suggestion-btn">Carbon Footprint</button>
+                <button onclick="sendMessage('Pollution sources')" class="suggestion-btn">Sources</button>
+                <button onclick="sendMessage('How can I reduce my carbon footprint?')" class="suggestion-btn">Reduce Carbon Footprint</button>
+                <button onclick="sendMessage('What are the main sources of air pollution?')" class="suggestion-btn">Sources of Pollution</button>
+                <button onclick="sendMessage('How does air quality affect health?')" class="suggestion-btn">Health Impact</button>
+                <button onclick="sendMessage('What can I do to help?')" class="suggestion-btn">Help the Environment</button>
+                <button onclick="sendMessage('How does my daily commute affect air quality?')" class="suggestion-btn">Commute Impact</button>
+                <button onclick="sendMessage('What are the benefits of clean air?')" class="suggestion-btn">Benefits of Clean Air</button>
+                <button onclick="sendMessage('How can I track my carbon footprint?')" class="suggestion-btn">Track Carbon Footprint</button>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input id="user-input" placeholder="Ask about AQI..." onkeydown="handleInput(event)">
+            
+            <button class="send-btn" onclick="sendMessage(document.getElementById('user-input').value)">
+                <i class="bi bi-send"></i>
+            </button>
+            
+            <button id="mic-button" onclick="startVoiceRecognition()" title="Speak your question">
+                🎤
+            </button>
+        </div>
+        
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script2.js"></script>
+</body>
+</html>
