@@ -1,4 +1,4 @@
-const API_KEY = "b5d20329d39b4bd08af2e9b68151a3a0"; // Replace with your OpenWeatherMap API key
+const API_KEY = "b5d20329d39b4bd08af2e9b68151a3a0"; 
 let lastAQI = null;
 let currentLocation = null;
 
@@ -21,12 +21,12 @@ async function getAQI(city) {
     try {
         showNotification(`Fetching data for ${city}...`);
         
-        // First get coordinates for the city
+        
         const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`);
         const geoData = await geoResponse.json();
         console.log("Geo Data Response:", geoData);
         
-        // Check if geoData is an array and has at least one element
+        
         if (!Array.isArray(geoData) || geoData.length === 0) {
             throw new Error("City not found. Please check the spelling or try a different city.");
         }
@@ -34,11 +34,11 @@ async function getAQI(city) {
         const lat = geoData[0].lat;
         const lon = geoData[0].lon;
 
-        // Get weather data
+        
         const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
         const weatherData = await weatherResponse.json();
 
-        // Get AQI data
+        
         const aqiResponse = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
         const aqiData = await aqiResponse.json();
 
@@ -186,7 +186,7 @@ function startVoiceRecognition() {
         return;
     }
 
-    const recognition = new webkitSpeechRecognition(); // Chrome-specific
+    const recognition = new webkitSpeechRecognition(); 
     recognition.continuous = false;
     recognition.interimResults = false;
     recognition.lang = 'en-US';
@@ -199,7 +199,7 @@ function startVoiceRecognition() {
 
     recognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript.trim();
-        sendMessage(transcript); // Send recognized text to chatbot
+        sendMessage(transcript); 
     };
 
     recognition.onerror = (event) => {
@@ -364,7 +364,7 @@ function calculateAQIFromPollutants(components) {
 
 
 
-// Initialize the application when the DOM content is loaded
+
 document.addEventListener("DOMContentLoaded", () => {
     getCurrentLocation();
     setInterval(() => {
