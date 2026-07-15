@@ -20,7 +20,7 @@
     animation: breathe 3s infinite; /* Add breathing effect */
 }
 
-/* If you have other value classes, adjust them similarly */
+
 :root {
     --primary-color: #3498db;
     --secondary-color: #2ecc71;
