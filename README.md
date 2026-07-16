@@ -20,22 +20,6 @@ A modern web application that provides **real-time Air Quality Index (AQI) monit
 
 ---
 
-## 📷 Preview
-
-> Add screenshots of your homepage here.
-
-Example:
-
-```
-<img width="891" height="766" alt="image" src="https://github.com/user-attachments/assets/a7a7921e-d45b-4b6c-a18e-d4d49656f5c5" />
-<img width="822" height="552" alt="image" src="https://github.com/user-attachments/assets/ea09bd75-799b-4d8d-b0ef-731254bacce2" />
-<img width="834" height="550" alt="image" src="https://github.com/user-attachments/assets/5261f804-32ab-4aa0-b6a2-9fcdab92b5bd" />
-
-
-```
-
----
-
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -64,9 +48,7 @@ AI-Assisted-AQI-Analyzer/
 ├── style.css
 ├── script.js
 ├── README.md
-└── assets/
-      ├── images/
-      └── screenshots/
+
 ```
 
 ---
