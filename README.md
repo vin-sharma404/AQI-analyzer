@@ -77,21 +77,6 @@ using any browser.
 
 ---
 
-## 🔑 API Setup
-
-This project uses the **OpenWeatherMap API**.
-
-1. Create a free account on OpenWeatherMap.
-2. Generate an API key.
-3. Open `script.js`
-
-
-```javascript
-const API_KEY = "b5d20329d39b4bd08af2e9b68151a3a0";
-```
-
----
-
 ## 🚀 How It Works
 
 1. User searches for a city.
@@ -155,14 +140,6 @@ It also supports:
 
 ---
 
-## 👨‍💻 Contributors
-
-- Vinayak Sharma
-- Varun Singh
-- Tanush Luthra
-- Trijal Wadhwa
-
----
 
 
 ## 📄 License
